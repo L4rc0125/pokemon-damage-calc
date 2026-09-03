@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ポケモンSV ダメージ計算"
+description = "ポケモンSVのランクバトル向けに、攻守の育成情報と対戦条件を入力してダメージ範囲・割合・確定数を確認できる日本語ダメージ計算Webアプリ。"
+version = "1.0.0"
+id = "artifacts/pokemon-damage-calc"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19768
+
+[services.development]
+run = "pnpm --filter @workspace/pokemon-damage-calc run dev"
+
+[services.production]
+build = [ "env", "PORT=19768", "BASE_PATH=/", "pnpm", "--filter", "@workspace/pokemon-damage-calc", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/pokemon-damage-calc/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19768"
+BASE_PATH = "/"
